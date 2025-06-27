@@ -1,7 +1,25 @@
 <script setup>
+import httpService from '@/services/HttpService.js';
+
 const props = defineProps({
   item: Object,
 });
+
+// 삭제 버튼 누르면 콘솔에 id 값 출력되게 해주세요.
+
+const remove = () => {
+  console.log('id : ', props.item.id);
+
+  // 확인 눌렀을때만 처리하고싶은 내용 if 안에 적으면 된다
+  if (confirm('삭제하시겠습니다.')) {
+    console.log('삭제하겠다');
+    // axios 가 데이터 보내면 객체로 보낸다
+    const params = {
+      memo_id: props.item.id,
+    };
+    const data = httpService.deleteMemo(params);
+  }
+};
 </script>
 
 <template>
@@ -23,7 +41,7 @@ const props = defineProps({
           </div>
         </div>
         <!-- 메모내용 -->
-        <div class="mt-2">{{ props.item.content }}</div>
+        <!-- <div class="mt-2">{{ props.item.content }}</div> -->
       </div>
     </div>
   </router-link>
