@@ -1,0 +1,35 @@
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:8080/api';
+
+class HttpService {
+  async postMemo(item) {
+    console.log('item: ', item);
+  }
+  async getMemoList(params) {
+    //get메소드 호출시, 2번쨰 인자는 객체를 보내고
+    // 객체의 params속서에 객채를 보내면
+    // 자동으로 쿼리스트링으로 변환해준다.
+    // 위와 아래가 같다
+    // const res = axios.get('/memo', {
+    //   params: params
+    // });
+    // const res2 = await axios.get('/memo', {params});
+    // console.log('params: ', params);
+    const res = await axios.get('/memo', { params });
+    console.log('getMemoList - res.data', res.data);
+    console.log('params: ', params);
+    return res.data;
+  }
+
+  async getMemo(id) {
+    console.log('params', id);
+  }
+  async putMemo(item) {
+    console.log('putMemo - item', item);
+  }
+  async deleteMemo(params) {
+    console.log('deleteMemo - params', params);
+  }
+}
+
+export default new HttpService();
