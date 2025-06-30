@@ -2,8 +2,11 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8080/api';
 
 class HttpService {
-  async postMemo(item) {
-    console.log('item: ', item);
+  //입력 매소드
+  async save(item) {
+    console.log('save-item: ', item);
+    const res = await axios.post('/memo', item);
+    return res.data;
   }
   async getMemoList(params) {
     //get메소드 호출시, 2번쨰 인자는 객체를 보내고
@@ -28,7 +31,6 @@ class HttpService {
     console.log('putMemo - item', item);
   }
   async deleteMemo(params) {
-
     console.log('deleteMemo - params', params);
     const res = await axios.delete('/memo', { params });
     return res.data;
