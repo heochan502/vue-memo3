@@ -3,6 +3,7 @@ import httpService from '@/services/HttpService.js';
 
 const props = defineProps({
   item: Object,
+  deleteItem: Function
 });
 
 // 삭제 버튼 누르면 콘솔에 id 값 출력되게 해주세요.
@@ -35,7 +36,9 @@ const remove = () => {
           <b>{{ props.item.title }}</b>
           <div>
             <!-- prevent 자식에서 시작된 이벤트가 부모까지 영향 주는 버블링 현상 막기위해서는거 -->
-            <span role="button" @click.prevent="remove(props.item.id)" button
+            <!-- <span role="button" @click.prevent="remove(props.item.id)" button -->
+             <!-- $emit('deleteItem',props.item.id) < 처음 파ㅏㄹ미터는 위의 function 이름 -->
+            <span role="button" @click.prevent="$emit('deleteItem',props.item.id, '안녕')" button
               >삭제</span
             ><!--추후 구현-->
           </div>
