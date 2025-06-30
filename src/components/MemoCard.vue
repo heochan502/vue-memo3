@@ -1,5 +1,5 @@
 <script setup>
-import httpService from '@/services/HttpService.js';
+// import httpService from '@/services/HttpService.js';
 
 const props = defineProps({
   item: Object,
@@ -8,19 +8,19 @@ const props = defineProps({
 
 // 삭제 버튼 누르면 콘솔에 id 값 출력되게 해주세요.
 
-const remove = () => {
-  console.log('id : ', props.item.id);
+// const remove = () => {
+//   console.log('id : ', props.item.id);
 
-  // 확인 눌렀을때만 처리하고싶은 내용 if 안에 적으면 된다
-  if (confirm('삭제하시겠습니다.')) {
-    console.log('삭제하겠다');
-    // axios 가 데이터 보내면 객체로 보낸다
-    const params = {
-      memo_id: props.item.id,
-    };
-    const data = httpService.deleteMemo(params);
-  }
-};
+//   // 확인 눌렀을때만 처리하고싶은 내용 if 안에 적으면 된다
+//   if (confirm('삭제하시겠습니다.')) {
+//     console.log('삭제하겠다');
+//     // axios 가 데이터 보내면 객체로 보낸다
+//     const params = {
+//       memo_id: props.item.id,
+//     };
+//     const data = httpService.deleteMemo(params);
+//   }
+// };
 </script>
 
 <template>
@@ -38,7 +38,7 @@ const remove = () => {
             <!-- prevent 자식에서 시작된 이벤트가 부모까지 영향 주는 버블링 현상 막기위해서는거 -->
             <!-- <span role="button" @click.prevent="remove(props.item.id)" button -->
              <!-- $emit('deleteItem',props.item.id) < 처음 파ㅏㄹ미터는 위의 function 이름 -->
-            <span role="button" @click.prevent="$emit('deleteItem',props.item.id, '안녕')" button
+            <span role="button" @click.prevent="$emit('deleteItem',props.item.id)" button
               >삭제</span
             ><!--추후 구현-->
           </div>

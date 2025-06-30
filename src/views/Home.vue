@@ -24,8 +24,21 @@ const getItems = async (param) => {
 //@remove-item="removeItem" <- "" 이거 안에 이름은 매소드랑 같아야함
 // @remove-item <- 요거는 자동으로 MemoCard에서 카멜 케이스로 변경되어서 deleteItem 으로 된다
 
-const removeItem = async (id, msg) => {
-  console.log('removeItem: ', id, msg);
+const removeItem = async (id) => {
+  console.log('removeItem: ', id);
+
+  // 확인 눌렀을때만 처리하고싶은 내용 if 안에 적으면 된다
+  if (confirm('삭제하시겠습니다.')) {
+    console.log('삭제하겠다');
+    // axios 가 데이터 보내면 객체로 보낸다
+    const params = {
+      memo_id: id,
+    };
+    const data = httpService.deleteMemo(params);
+    if (data.resultData === 1) {
+      getItems({});
+    }
+  }
 };
 </script>
 
