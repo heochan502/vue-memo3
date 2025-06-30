@@ -11,7 +11,10 @@ const router = createRouter({
     },
     {
       path: '/add',
-      name: 'Form',
+      component: () => import('@/views/Form.vue'),
+    },
+    {
+      path: '/mod/:memoId',
       component: () => import('@/views/Form.vue'),
     },
   ],

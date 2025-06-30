@@ -24,8 +24,16 @@ class HttpService {
     return res.data;
   }
 
-  async getMemo(id) {
-    console.log('params', id);
+  async modify(item) {
+    console.log('modify - item : ', item);
+    const res = await axios.put('/memo', item);
+    return res.data;
+  }
+
+  async findById(id) {
+    console.log('findById - id ', id);    
+    const res = await axios.get(`/memo/${id}`);
+    return res.data;
   }
   async putMemo(item) {
     console.log('putMemo - item', item);

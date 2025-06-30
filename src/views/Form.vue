@@ -15,6 +15,8 @@ const route = useRoute(); // PathVariable 데이터 가져오기 위한 용도
 const refTitle = useTemplateRef('ref_title');
 const refCtnts = useTemplateRef('ref_ctnts');
 
+console.log('route.params.memoId', route.params.memoId);
+
 // 반응형 상태
 const state = reactive({
   memo: {
@@ -48,14 +50,22 @@ const submit = async () => {
     return;
   } else {
     // 등록, 수정 처리인지 구분이 되어야 한다.
+    // 수정하기 들어갔을 때 한번 사용 해야한다
     if (route.params.memoId) {
       // 수정 처리
-      httpService.setItem(state.memo);
+      //   httpService.setItem(state.memo);
+
+      return;
     } else {
-      const data = await httpService.save(state.memo);
-      if (data.resultData === 1) { // 등록 성공
+      const bodyJson = {
+        title: state.memo.title,
+        ctnts: state.memo.ctnts,
+      };
+      const data = await httpService.save(bodyJson);
+      if (data.resultData === 1) {
+        // 등록 성공
         //홈화면으로 라우터 처리
-        router.push({path:'/'});
+        router.push({ path: '/' });
 
         // console.log('글등록 : ', data.resultMessage);
       }
@@ -74,15 +84,24 @@ const submit = async () => {
   }
 };
 
-onMounted(async () => {
-  // 여기 아래 구문으로 분기를 줘서 // 추가하면 form화면 내용 없애고 있으면
-  // 화면에 제목 내용을 출력하고 // 수정하는 화면도 하는거
+onMounted(() => {
   if (route.params.memoId) {
-    // 값이 있다면 item 클릭, 없다면 [+추가하기] 버튼 클릭
-    state.memo = await httpService.getItem(route.params.memoId);
-    state.memo.memoId = parseInt(route.params.memoId);
+    findById();
   }
 });
+const findById = async () => {
+  const data = await httpService.findById(route.params.memoId);
+  state.memo = data.resultData;
+};
+// onMounted(async () => {
+//   // 여기 아래 구문으로 분기를 줘서 // 추가하면 form화면 내용 없애고 있으면
+//   // 화면에 제목 내용을 출력하고 // 수정하는 화면도 하는거
+//   if (route.params.memoId) {
+//     // 값이 있다면 item 클릭, 없다면 [+추가하기] 버튼 클릭
+//     state.memo = await httpService.getItme(route.params.memoId);
+//     state.memo.memoId = parseInt(route.params.memoId);
+//   }
+// });
 </script>
 <template>
   <!-- 아래가 form의 전반적이 ㄴ화면 -->
