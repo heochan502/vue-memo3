@@ -2,7 +2,7 @@
 import { reactive, onMounted } from 'vue';
 import httpService from '@/services/HttpService.js';
 import MemoCard from '@/components/MemoCard.vue';
-// import Form from '@/views/Form.vue';
+import Form from '@/views/Form.vue';
 
 const state = reactive({
   memos: [],
@@ -25,6 +25,8 @@ const getItems = async (param) => {
 // @remove-item <- 요거는 자동으로 MemoCard에서 카멜 케이스로 변경되어서 deleteItem 으로 된다
 
 const removeItem = async (id) => {
+  // const deleteIdx = state.memos.findIndex((item) => item.id === id);
+  // console.log('removeItem: ', id, deleteIdx);
   console.log('removeItem: ', id);
 
   // 확인 눌렀을때만 처리하고싶은 내용 if 안에 적으면 된다
@@ -34,9 +36,16 @@ const removeItem = async (id) => {
     const params = {
       memo_id: id,
     };
-    const data = httpService.deleteMemo(params);
+    const data = await httpService.deleteMemo(params);
     if (data.resultData === 1) {
-      getItems({});
+      // getItems({});
+
+      // 배열상태에서 삭제된 데이터만 삭제해서 없애버릴거
+      // 배열이 값이 없으면 -1 넘어오더라 index가 0부터 라서
+      const deleteIdx = state.memos.findIndex((item) => item.id === id);
+      if (deleteIdx >= 0) {
+        state.memos.splice(deleteIdx, 1);
+      }
     }
   }
 };
@@ -44,6 +53,7 @@ const removeItem = async (id) => {
 
 <template>
   <div class="memo-list">
+    <router-link to="/add" class="add btn btn-light"> + 추가하기 </router-link>
     <MemoCard
       @delete-item="removeItem"
       v-for="m in state.memos"
@@ -76,9 +86,6 @@ const removeItem = async (id) => {
     </router-link> -->
 
     <!-- router-link to="" 이경로로 액션이 들어오면 이경로로 들어가지게 한다 -->
-    <router-link to="/memos/add" class="add btn btn-light">
-      + 추가하기
-    </router-link>
   </div>
 </template>
 
