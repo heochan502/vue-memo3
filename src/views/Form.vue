@@ -49,36 +49,35 @@ const submit = async () => {
     refCtnts.value.focus();
     return;
   } else {
+    let data = null;
+    const bodyJson = {
+      title: state.memo.title,
+      ctnts: state.memo.ctnts,
+    };
     // 등록, 수정 처리인지 구분이 되어야 한다.
     // 수정하기 들어갔을 때 한번 사용 해야한다
     if (route.params.memoId) {
-      // 수정 처리
-      //   httpService.setItem(state.memo);
+      // 아래 처럼 속성 추가 가능
+      bodyJson.memoId = state.memo.memoId;
 
-      return;
+      data = await httpService.modify(bodyJson);
+      // console.log('id :', route.params.memoId);
     } else {
-      const bodyJson = {
-        title: state.memo.title,
-        ctnts: state.memo.ctnts,
-      };
-      const data = await httpService.save(bodyJson);
-      if (data.resultData === 1) {
-        // 등록 성공
-        //홈화면으로 라우터 처리
-        router.push({ path: '/' });
+      data = await httpService.save(bodyJson);
+    }
 
-        // console.log('글등록 : ', data.resultMessage);
-      }
-      // 입력 처리
-      // httpService.addItem(state.memo);
-      else {
-        alert(data.resultMessage);
-        //실패
-      }
+    if (data.resultData === 1) {
+      // 성공
+      //홈화면으로 라우터 처리
+      alert(data.resultMessage);
+      router.push({ path: '/' });
+    } else {
+      alert(data.resultMessage);
+      // alert('저장했습니다.');
+      //실패
     }
     // 메모 삽입3
     // 안내 메시지 출력
-    alert('저장했습니다.');
     // 메인 화면으로 이동
     router.push({ path: '/' });
   }
